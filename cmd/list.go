@@ -17,7 +17,9 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/alexvassiliou/gophercises/task/db"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +28,17 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all your tasks",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
+		fmt.Println("Showing your list of tasks")
+		tasks, err := db.AllTasks()
+		if err != nil {
+			log.Fatal(err)
+		}
+		if len(tasks) == 0 {
+			fmt.Println("you dont have any tasks available")
+		}
+		for i, task := range tasks {
+			fmt.Println(i+1, task.Value)
+		}
 	},
 }
 
